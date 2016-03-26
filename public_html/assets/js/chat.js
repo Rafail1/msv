@@ -3,7 +3,7 @@ function myChat(client_id) {
     this.client_id = client_id;
     this.started = false;
     this.messages = {server:[], client:[]};
-    this.chatWindow = $("#chat-window");
+    this.chatWindow = $("#"+client_id);
     this.getArchive_url = "/assets/chat/getArchive.php";
     this.check_url = "/assets/chat/check.php";
     this.send_url = "/assets/chat/send.php";

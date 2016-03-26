@@ -5,14 +5,14 @@
         <script src="/assets/js/libs/jquery-1.11.0.min.js"></script>
         <script src="/assets/js/serverChat.js"></script>
     </head>
-    <body>
+    <body class="server">
         <?php foreach($chats as $id => $chat) { ?>
-        <div id="chat<?php echo $id; ?>">
-            <div id="chat-window<?php echo $id; ?>">
+        <div id="<?php echo $id; ?>" class="chat">
+            <div class="chat-window">
 
             </div>
-            <textarea id="client-window<?php echo $id; ?>"></textarea>
-            <button id="send-message<?php echo $id; ?>">Send</button>
+            <textarea class="client-window"></textarea>
+            <button class="send-message">Send</button>
         </div>
         <?php } ?>
     </body>
