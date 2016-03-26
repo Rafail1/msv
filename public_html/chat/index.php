@@ -16,6 +16,10 @@
     <script>
         var chat = new myChat('<?php echo $_COOKIE["PHPSESSID"] ? $_COOKIE["PHPSESSID"] : session_id(); ?>');
         chat.start();
+        $("#send-message").on("click", function() {
+            chat.send($("#client-window").val());
+            $("#client-window").val("");
+        })
     </script>
 </html>
 
