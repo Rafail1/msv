@@ -1,54 +1,32 @@
-function myChat(client_id) {
-    this.server = {};
-    this.client_id = client_id;
-    this.started = false;
-    this.messages = {server:[], client:[]};
-    this.chatWindow = $("#"+client_id);
-    this.getArchive_url = "/assets/chat/client/getArchive.php";
-    this.check_url = "/assets/chat/client/check.php";
-    this.send_url = "/assets/chat/client/send.php";
-
+function serverChat() {
+    this.check_url = "/assets/chat/server/check.php";
 }
 
-myChat.prototype = {
-    constructor: myChat(),
+serverChat.prototype = {
+    constructor: serverChat(),
     start: function () {
+        this.time = parseInt(new Date().getTime() / 1000);
         this.started = true;
-        this.getArchive();
+        this.check();
     },
-    getArchive: function() {
-        var self = this;
-        $.ajax({
-            url: this.getArchive_url,
-            data:{client_id:this.client_id},
-            type:"post",
-            success: function (res) {
-                res = JSON.parse(res);
-                if (res) {
-                    self.render(res);
-                }
-                self.check();
-            },
-            error: function (res) {
-                console.log(res);
-                self.check();
-            }
-        });
+    setOnline : function() {
+        console.log("setOnline");
     },
     check: function () {
         var self = this;
         $.ajax({
             url: this.check_url,
-            data:{client_id:this.client_id},
+            data:{time:this.time},
             type:"post",
             success: function (res) {
                 res = JSON.parse(res);
                 if (res) {
-                    self.answer(res);
+                    this.time = parseInt(new Date().getTime() / 1000);
+                    this.answer(res);
                 }
                 setTimeout(function () {
                     self.check();
-                }, 1000);
+                }, 10000);
             },
             error: function (res) {
                 console.log(res);
@@ -70,9 +48,7 @@ myChat.prototype = {
             }
         });
     },
-    setOnline: function (online) {
-        this.server.online = online;
-    },
+
     answer: function (data) {
         if(data.message) {
             this.addMessage(data.message);
