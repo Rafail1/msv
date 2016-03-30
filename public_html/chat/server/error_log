@@ -1,0 +1,14 @@
+[30-Mar-2016 19:24:05 Europe/Minsk] PHP Fatal error:  Uncaught exception 'RuntimeException' with message 'Directory name must not be empty.' in /home/msvsound/public_html/assets/chat/server/class.php:16
+Stack trace:
+#0 /home/msvsound/public_html/assets/chat/server/class.php(16): DirectoryIterator->__construct('')
+#1 /home/msvsound/public_html/assets/chat/server/class.php(12): ServerChat->setActiveChats()
+#2 /home/msvsound/public_html/chat/server/index.php(6): ServerChat->__construct()
+#3 {main}
+  thrown in /home/msvsound/public_html/assets/chat/server/class.php on line 16
+[30-Mar-2016 19:28:52 Europe/Minsk] PHP Fatal error:  Uncaught exception 'RuntimeException' with message 'Directory name must not be empty.' in /home/msvsound/public_html/assets/chat/server/class.php:16
+Stack trace:
+#0 /home/msvsound/public_html/assets/chat/server/class.php(16): DirectoryIterator->__construct('')
+#1 /home/msvsound/public_html/assets/chat/server/class.php(12): ServerChat->setActiveChats()
+#2 /home/msvsound/public_html/chat/server/index.php(6): ServerChat->__construct()
+#3 {main}
+  thrown in /home/msvsound/public_html/assets/chat/server/class.php on line 16

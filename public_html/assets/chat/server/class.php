@@ -1,15 +1,14 @@
 <?php
 
-class ServerChat {
+include_once filter_input(INPUT_SERVER, "DOCUMENT_ROOT") . '/assets/chat/Chat.php';
 
-    private $archDir;
+class ServerChat extends Chat {
+
     private $activeChats;
-    private $archives;
     private $lastAccess;
 
     public function __construct() {
-        $this->archDir = filter_input(INPUT_SERVER, "DOCUMENT_ROOT") . "/chat/archive";
-        $this->archives = [];
+        parent::__construct();
         $this->setActiveChats();
     }
 
@@ -37,18 +36,24 @@ class ServerChat {
         $this->activeChats = $chats;
     }
 
+    public function getChat($id, $time = false) {
+        $clientFile = "client" . $id;
+        $serverFile = "server" . $id;
+
+        $client = $this->getArchive($clientFile, "client", $time);
+        $server = $this->getArchive($serverFile, "server", $time);
+
+        $messages = array_merge($client, $server);
+        usort($messages, array($this, 'comp'));
+        
+        return $messages;
+    }
+
     public function getNew($time) {
         foreach ($this->lastAccess as $id => $la) {
             if ($la > $time) {
-                
-                $clientFile = "client" . $id;
-                $serverFile = "server" . $id;
+                $messages = $this->getChat($id, $time);
 
-                $client = $this->getArchive($clientFile, "client", $time);
-                $server = $this->getArchive($serverFile, "server", $time);
-
-                $messages = array_merge($client, $server);
-                usort($messages, array($this, 'comp'));
                 $response[$id] = $messages;
             }
         }
@@ -63,54 +68,11 @@ class ServerChat {
         return $this->archives;
     }
 
-    public function comp($a, $b) {
-        if ($a["time"] > $b["time"]) {
-            return 1;
-        } elseif ($a["time"] < $b["time"]) {
-            return - 1;
-        }
-        return 0;
-    }
-
     public function setChats() {
         foreach ($this->activeChats as $id) {
-            $clientFile = "client" . $id;
-            $serverFile = "server" . $id;
-
-            $client = $this->getArchive($clientFile, "client");
-            $server = $this->getArchive($serverFile, "server");
-
-            $messages = array_merge($client, $server);
-            usort($messages, array($this, 'comp'));
+            $messages = $this->getChat($id);
             $this->archives[$id] = $messages;
         }
-    }
-
-    public function getArchive($filename, $who, $fromTime = 0) {
-
-        $fname = $this->archDir . "/" . $filename;
-        $response = [];
-        if (file_exists($fname)) {
-            $content = file_get_contents($fname);
-            $messages = explode(SEP, $content);
-            foreach ($messages as $mess) {
-                if (!$mess) {
-                    continue;
-                }
-                $mess = explode(SEP_TIME, $mess);
-                $time = $mess[1];
-                if ($fromTime && $time < $fromTime) {
-                    continue;
-                }
-                $message = $mess[0];
-
-                $response[] = ["id" => $time, "time" => $time, "text" => $message, "who" => $who];
-            }
-        }
-
-
-
-        return $response;
     }
 
 }
