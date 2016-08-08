@@ -1,9 +1,1 @@
-User-agent: *
-
-Disallow: /assets/
-Disallow: /bootstrap/
-Disallow: /favicon.ico
-
-Host: msvsound.by
-
-Sitemap: http://msvsound.by/sitemap.xml
+[{"c":[54.46,43.65],"d":"first"},{"c":[55.46,44.65],"d":"second"}]
